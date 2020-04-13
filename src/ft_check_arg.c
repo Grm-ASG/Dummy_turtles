@@ -85,11 +85,36 @@ int             ft_is_beg_turtl(char *arg)
     return (0);
 }
 
-void            ft_create_turtl(t_turtles **prime)
+void            ft_create_turtl(t_turtles **prime, int i, char *arg)
 {
-        if (!((*prime) = (t_turtles *)malloc(sizeof(t_turtles) * 1)))
-            ft_errors(999);
-        (*prime)->next = NULL;
+    t_turtles *tmp;
+    t_turtles *tmp2;
+
+    tmp = (*prime);
+    tmp2 = tmp;
+
+    if (!((*prime) = (t_turtles *)malloc(sizeof(t_turtles) * 1)))
+        ft_errors(999);
+    (*prime)->next = NULL;
+
+    ft_turtle_way(prime, arg);
+    ft_check_x_y(prime, &i, arg);
+    ft_check_wlk_cmd(prime, &i, arg);
+    ft_check_name(prime, i, arg);
+
+    if (tmp == NULL)
+    {
+        (*prime)->num = 1;
+    }
+
+    if (tmp != NULL)
+    {
+        while (tmp2->next)
+            tmp2 = tmp2->next;
+        tmp2->next = (*prime);
+        (*prime)->num = tmp2->num + 1;
+        (*prime) = tmp;
+    }
 }
 
 int             ft_check_turtle(char *arg, t_turtles **prime)
@@ -99,18 +124,7 @@ int             ft_check_turtle(char *arg, t_turtles **prime)
     i = 2;
     if (ft_is_beg_turtl(arg))
     {
-        ft_create_turtl(prime);
-        ft_turtle_way(prime, arg);
-        ft_check_x_y(prime, &i, arg);
-        ft_check_wlk_cmd(prime, &i, arg);
-        ft_check_name(prime, i, arg);
-
-        /*delete*/
-        printf("Name of the turtle           = %s\n", (*prime)->name);
-        printf("Where is the turt watch      = %d\n", (*prime)->way);
-        printf("The number of turtule        = %d\n", (*prime)->num);
-        printf("The walk-command is          = %s\n", (*prime)->walk_command);
-        printf("The coordinates of Turtle    = %lu:%lu\n\n", (*prime)->location >> 32, (*prime)->location << 32 >> 32);
+        ft_create_turtl(prime, i, arg);
         
     }
     else if (arg[1] == ':')
@@ -118,6 +132,19 @@ int             ft_check_turtle(char *arg, t_turtles **prime)
     else
         return (0);
     return (1);
+}
+
+void            ft_print_players(t_turtles *prime)
+{
+    while (prime)
+    {
+        printf("Name of the turtle           = %s\n", prime->name);
+        printf("Where is the turt watch      = %d\n", prime->way);
+        printf("The number of turtule        = %d\n", prime->num);
+        printf("The walk-command is          = %s\n", prime->walk_command);
+        printf("The coordinates of Turtle    = %lu:%lu\n\n", prime->location >> 32, prime->location << 32 >> 32);
+        prime = prime->next;
+    }
 }
 
 void            ft_check_arg(int argc, char *argv[],
@@ -138,4 +165,5 @@ void            ft_check_arg(int argc, char *argv[],
         }
         i++;
     }
+    ft_print_players(*prime);
 }
