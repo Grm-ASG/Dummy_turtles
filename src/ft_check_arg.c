@@ -4,8 +4,11 @@ void           ft_check_coord(int *tmp, int *i, char *arg, ULONG *x, char c)
 {
     *tmp = *i;
     while(arg[*tmp] != c)
-        if (!(arg[*tmp] >= '0' && arg[(*tmp)++] <= '9'))
+    {
+        if (!(arg[*tmp] >= '0' && arg[*tmp] <= '9'))
             ft_errors(3);
+        ++(*tmp);
+    }
     *x = ft_atoi(arg + (*i)) - 1;
     *i = *tmp + 1;
 
@@ -164,15 +167,28 @@ void            ft_flag(char **argv, ULONG *map, int *i, ULONG cuc[][2], char fl
         *i = 0;
         ft_check_coord(&tmp, i, argv[tmp2 + 1], &x, ':');
         ft_check_coord(&tmp, i, argv[tmp2 + 1], &y, '\0');
-        *i = tmp + 1;
+        *i = tmp2 + 2;
         *map = ((x + 1) << 32) | (y + 1);
-        cuc[0][0] = *map >> 33;
-        cuc[0][1] = (*map & mask) >> 1;
+        if (!fl_s[0][1])
+        {
+            cuc[0][0] = *map >> 33;
+            cuc[0][1] = (*map & mask) >> 1;
+        }
         fl_s[0][0] = 1;
     }
-    if (map)
+    else if (argv[*i][1] == 'l')
     {
+        tmp2 = *i;
+        *i = 0;
+        ft_check_coord(&tmp, i, argv[tmp2 + 1], &x, ':');
+        ft_check_coord(&tmp, i, argv[tmp2 + 1], &y, '\0');
+        *i = tmp2 + 2;
+        cuc[0][0] = x;
+        cuc[0][1] = y;
+        fl_s[0][1] = 1;
     }
+    if ((x + 1) == 0 || (y + 1) == 0)
+        ft_errors(9);
 }
 
 void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *map, ULONG cuc[][2])
@@ -186,16 +202,27 @@ void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *m
         if (argv[i][0] == '-')
             ft_flag(argv, map, &i, cuc, &fl_s);
         else
+        {
             (ft_check_turtle(argv[i], prime));
-        i++;
+            i++;
+        }
     }
+    printf("map_x = %lu\n", *map >> 32);
+    printf("map_y = %lu\n", *map << 32 >> 32);
+    printf("cuc_x = %lu\n", cuc[0][0]);
+    printf("cuc_y = %lu\n", cuc[0][1]);
     if (!fl_s[0])
     {
         *map = STANDART_MAP;
-        //if (!fl_l)
-        cuc[0][0] = (*map >> 33);
-        cuc[0][1] = (*map << 32 >> 33);
+        if (!fl_s[1])
+        {
+            cuc[0][0] = (*map >> 33);
+            cuc[0][1] = (*map << 32 >> 33);
+        }
     }
+    if (cuc[0][0] + 1 > *map >> 32 || cuc[0][1] + 1 > *map << 32 >> 32)
+        ft_errors(10);
+    //ft_print_players(*prime);
     if (argc)
     {
         //TODO

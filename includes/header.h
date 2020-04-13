@@ -8,6 +8,7 @@
 # define ERR            "Error, "
 # define mask           4294967295
 # define STANDART_MAP   ((ULONG)30 << 32 | (ULONG)30)
+# define MAX_UL         18446744073709551615
 
 typedef unsigned long ULONG;
 

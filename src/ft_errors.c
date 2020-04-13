@@ -33,6 +33,14 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("Sorry, I don't know this flag. Try use it 5 minuts later, I'll Google it for now\n"); //TODO
     }
+    else if (num_of_err == 9)
+    {
+        ft_putstr("Check the coordinates, maybe there is 0?\n"); //TODO
+    }
+    else if (num_of_err == 10)
+    {
+        ft_putstr("Oh no, cucumber in other university, try too put it in our\n"); //TODO
+    }
     else if (num_of_err == 999)
     {
         ft_putstr("Oh, no, this is the rise of the machines!\nJoke, we just didn't get the memory, try a little bit less\n");
