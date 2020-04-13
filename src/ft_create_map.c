@@ -28,6 +28,6 @@ char            **ft_create_map(ULONG columns, ULONG rows, ULONG cucumber)
         map[i][j] = '\0';
         i++;
     }
-    map[CUCU_I][CUCU_J] = '0';
+    map[cucumber >> 33][cucumber << 32 >> 32] = '0';
     return (map);
 }
