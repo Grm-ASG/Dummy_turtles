@@ -75,55 +75,43 @@ void            ft_check_name(t_turtles **prime, int i, char *arg)
         (*prime)->name[len++] = arg[i++];
     (*prime)->name[i] = '\0';
 }
-
-int             ft_check_turtle(char *arg, t_turtles **prime)
+int             ft_is_beg_turtl(char *arg)
 {
-    t_turtles   *tmp;
-    int         i;
-
     if ((arg[0] == 'l' && arg[1] == ':') ||
         (arg[0] == 'r' && arg[1] == ':') ||
         (arg[0] == 'u' && arg[1] == ':') ||
         (arg[0] == 'd' && arg[1] == ':'))
-    {
-        // Allocating mamory for the struct of turtle ↓
+        return (1);
+    return (0);
+}
+
+void            ft_create_turtl(t_turtles **prime)
+{
         if (!((*prime) = (t_turtles *)malloc(sizeof(t_turtles) * 1)))
             ft_errors(999);
-        
-        // Here I assign the way, where the turtle is looking
-        // 1 = right;   2 = up;   4 = left;   8 = down;
+        (*prime)->next = NULL;
+}
+
+int             ft_check_turtle(char *arg, t_turtles **prime)
+{
+    int         i;
+
+    i = 2;
+    if (ft_is_beg_turtl(arg))
+    {
+        ft_create_turtl(prime);
         ft_turtle_way(prime, arg);
-
-        // Check and assing coordinates of the turtle on the map
-        i = 2;
         ft_check_x_y(prime, &i, arg);
-        
-        // Check and assing walk-command
         ft_check_wlk_cmd(prime, &i, arg);
-
-        // Check and assing name of the Turtle
         ft_check_name(prime, i, arg);
 
-        if ((*prime)->next == NULL)
-            (*prime)->num = 1;
-        else
-        {
-            tmp = (*prime);
-            i = 1;
-            while (tmp->next)
-            {
-                i++;
-                tmp = tmp->next; 
-            }
-            tmp->num = i;
-        }
-
-
+        /*delete*/
         printf("Name of the turtle           = %s\n", (*prime)->name);
         printf("Where is the turt watch      = %d\n", (*prime)->way);
         printf("The number of turtule        = %d\n", (*prime)->num);
         printf("The walk-command is          = %s\n", (*prime)->walk_command);
         printf("The coordinates of Turtle    = %lu:%lu\n\n", (*prime)->location >> 32, (*prime)->location << 32 >> 32);
+        
     }
     else if (arg[1] == ':')
         ft_errors(6);
@@ -136,18 +124,16 @@ void            ft_check_arg(int argc, char *argv[],
                             t_turtles **prime, ULONG *map)
 {
     int i;
-    int j;
 
     i = 1;
     while (argv[i])
     {
-        j = 0;
         if (ft_check_turtle(argv[i], prime))
         {
             i++;
             continue;
         }
-        if (j || argc || *map)
+        if (argc || *map)
         {
         }
         i++;
