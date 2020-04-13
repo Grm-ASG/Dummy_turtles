@@ -123,10 +123,7 @@ int             ft_check_turtle(char *arg, t_turtles **prime)
 
     i = 2;
     if (ft_is_beg_turtl(arg))
-    {
         ft_create_turtl(prime, i, arg);
-        
-    }
     else if (arg[1] == ':')
         ft_errors(6);
     else
@@ -134,6 +131,7 @@ int             ft_check_turtle(char *arg, t_turtles **prime)
     return (1);
 }
 
+        //TODO DELETE FUNCTION
 void            ft_print_players(t_turtles *prime)
 {
     while (prime)
@@ -147,23 +145,60 @@ void            ft_print_players(t_turtles *prime)
     }
 }
 
-void            ft_check_arg(int argc, char *argv[],
-                            t_turtles **prime, ULONG *map)
+void            ft_flag(char **argv, ULONG *map, int *i, ULONG cuc[][2], char fl_s[][5])
 {
-    int i;
+    ULONG   x;
+    ULONG   y;
+    int     tmp;
+    int     tmp2;
+
+    if (argv[*i][1] != '\0' && argv[*i][2] != '\0')
+        ft_errors(7);
+    if (argv[*i][1] != 's' && argv[*i][1] != 'l' &&
+        argv[*i][1] != 'a' && argv[*i][1] != 'k' &&
+        argv[*i][1] != 'i')
+        ft_errors(8);
+    if (argv[*i][1] == 's')
+    {
+        tmp2 = *i;
+        *i = 0;
+        ft_check_coord(&tmp, i, argv[tmp2 + 1], &x, ':');
+        ft_check_coord(&tmp, i, argv[tmp2 + 1], &y, '\0');
+        *i = tmp + 1;
+        *map = ((x + 1) << 32) | (y + 1);
+        cuc[0][0] = *map >> 33;
+        cuc[0][1] = (*map & mask) >> 1;
+        fl_s[0][0] = 1;
+    }
+    if (map)
+    {
+    }
+}
+
+void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *map, ULONG cuc[][2])
+{
+    int     i;
+    char    fl_s[5] = { 0, 0, 0, 0, 0 };
 
     i = 1;
     while (argv[i])
     {
-        if (ft_check_turtle(argv[i], prime))
-        {
-            i++;
-            continue;
-        }
-        if (argc || *map)
-        {
-        }
+        if (argv[i][0] == '-')
+            ft_flag(argv, map, &i, cuc, &fl_s);
+        else
+            (ft_check_turtle(argv[i], prime));
         i++;
     }
-    ft_print_players(*prime);
+    if (!fl_s[0])
+    {
+        *map = STANDART_MAP;
+        //if (!fl_l)
+        cuc[0][0] = (*map >> 33);
+        cuc[0][1] = (*map << 32 >> 33);
+    }
+    if (argc)
+    {
+        //TODO
+    }
+    // DELETE
 }

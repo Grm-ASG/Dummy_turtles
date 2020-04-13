@@ -25,6 +25,14 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("Incorrect way of watcing of the turtle\n"); //TODO
     }
+    else if (num_of_err == 7)
+    {
+        ft_putstr("Too mach arguments, try use 1 in 1 case\n"); //TODO
+    }
+    else if (num_of_err == 8)
+    {
+        ft_putstr("Sorry, I don't know this flag. Try use it 5 minuts later, I'll Google it for now\n"); //TODO
+    }
     else if (num_of_err == 999)
     {
         ft_putstr("Oh, no, this is the rise of the machines!\nJoke, we just didn't get the memory, try a little bit less\n");
