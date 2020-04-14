@@ -1,14 +1,16 @@
 #ifndef HEADER_H
 # define HEADER_H
 
+# include <unistd.h>
 # include <stdlib.h>
 /*delete*/
 #include <stdio.h>
 
 # define ERR            "Error, "
-# define mask           4294967295
+# define MASK           4294967295
 # define STANDART_MAP   ((ULONG)30 << 32 | (ULONG)30)
-# define MAX_UL         18446744073709551615
+# define MAX_UL         18446744073709551615UL
+# define ANTI_MASKA     18446744069414584320UL
 
 typedef unsigned long ULONG;
 

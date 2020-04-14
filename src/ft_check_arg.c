@@ -160,7 +160,7 @@ void            ft_print_players(t_turtles *prime)
         printf("Where is the turt watch      = %d\n", prime->way);
         printf("The number of turtule        = %d\n", prime->num);
         printf("The walk-command is          = %s\n", prime->walk_command);
-        printf("The coordinates of Turtle    = %lu:%lu\n\n", prime->location >> 32, prime->location & mask);
+        printf("The coordinates of Turtle    = %lu:%lu\n\n", prime->location >> 32, prime->location & MASK);
         prime = prime->next;
     }
 }
@@ -189,7 +189,7 @@ void            ft_flag(char **argv, ULONG *map, int *i, ULONG cuc[][2], char fl
         if (!fl_s[0][1])
         {
             cuc[0][0] = *map >> 33;
-            cuc[0][1] = (*map & mask) >> 1;
+            cuc[0][1] = (*map & MASK) >> 1;
         }
         fl_s[0][0] = 1;
     }
@@ -213,10 +213,10 @@ void            ft_check_turtle_in_the_map(t_turtles *prime, ULONG map, ULONG cu
     while (prime)
     {
         if ((prime->location >> 32) > map >> 32 ||
-            ((prime->location & mask) > (map & mask)))
+            ((prime->location & MASK) > (map & MASK)))
             ft_errors(13);
         if (((prime->location >> 32) - 1 == cuc[0][0]) &&
-            ((prime->location & mask) - 1 == cuc[0][1]))
+            ((prime->location & MASK) - 1 == cuc[0][1]))
             ft_winner(prime, prime->num);
         prime = prime->next;
     }
@@ -257,18 +257,18 @@ void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *m
             cuc[0][1] = (*map << 32 >> 33);
         }
     }
-/*
-    printf("map_x = %lu\n", *map >> 32);
-    printf("map_y = %lu\n", *map << 32 >> 32);
+
+    printf("map_x = %lu\n", *map & MASK);
+    printf("map_y = %lu\n", *map >> 32 );
     printf("cuc_x = %lu\n", cuc[0][0]);
     printf("cuc_y = %lu\n\n", cuc[0][1]);
-*/
+
 
     if ((cuc[0][0] + 1> *map >> 32) ||
         (cuc[0][1] + 1> *map << 32 >> 32))
         ft_errors(10);
     ft_check_turtle_in_the_map(*prime, *map, cuc);
-//   ft_print_players(*prime);
+   ft_print_players(*prime);
     if (argc)
     {
     }

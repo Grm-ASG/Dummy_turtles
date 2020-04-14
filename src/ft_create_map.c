@@ -11,16 +11,23 @@ char            **ft_create_map(ULONG columns, ULONG rows, ULONG cuc[][2])
         return (NULL);
 
     while (i < columns)
-        if (!(map[i++] = (char *)malloc(sizeof(char) * (rows + 1))))
+    {
+        if (!(map[i] = (char *)malloc(sizeof(char) * (rows + 1))))
             return (NULL);
+        ++i;
+    }
     map[columns] = '\0';
     i = 0;
     while (map[i])
     {
         j = 0;
         while (j < rows)
-            map[i][j++] = '-';
-        map[i++][j] = '\0';
+        {
+            map[i][j] = '-';
+            ++j;
+        }
+        map[i][j] = '\0';
+        ++i;
     }
     map[cuc[0][0]][cuc[0][1]] = '0';
     return (map);

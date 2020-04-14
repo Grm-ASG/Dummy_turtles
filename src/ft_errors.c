@@ -73,6 +73,11 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("Of course we could do it 1 bilion years, but after 1000 steps nobody can't took cucumber, oh sweet CUUUCUMBER!\n");
     }
+    
+    else if (num_of_err == 1000)
+    {
+        ft_putstr("No way!\n");
+    }
     exit(num_of_err);
 }
 
