@@ -191,7 +191,7 @@ void            ft_flag(char **argv, ULONG *map, int *i, ULONG cuc[][2], char fl
             cuc[0][0] = *map >> 33;
             cuc[0][1] = (*map & MASK) >> 1;
         }
-        fl_s[0][0] = 1;
+        fl_s[0][0] +=1;
     }
     else if (argv[*i][1] == 'l')
     {
@@ -202,7 +202,7 @@ void            ft_flag(char **argv, ULONG *map, int *i, ULONG cuc[][2], char fl
         *i = tmp2 + 2;
         cuc[0][0] = x - 1;
         cuc[0][1] = y - 1;
-        fl_s[0][1] = 1;
+        fl_s[0][1] +=1;
     }
     if (x == 0 || y == 0)
         ft_errors(9);
@@ -244,6 +244,8 @@ void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *m
             i++;
         }
     }
+    if (fl_s[0] > 1 || fl_s[1] > 1)
+        ft_errors(16);
     if (*prime == NULL)
         ft_errors(14);
     if (i != j)
@@ -253,22 +255,15 @@ void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *m
         *map = STANDART_MAP;
         if (!fl_s[1])
         {
-            cuc[0][0] = (*map >> 33);
-            cuc[0][1] = (*map << 32 >> 33);
+            cuc[0][0] = (*map >> 33) - 1;
+            cuc[0][1] = (*map << 32 >> 33) - 1;
         }
     }
-
-    printf("map_x = %lu\n", *map & MASK);
-    printf("map_y = %lu\n", *map >> 32 );
-    printf("cuc_x = %lu\n", cuc[0][0]);
-    printf("cuc_y = %lu\n\n", cuc[0][1]);
-
-
     if ((cuc[0][0] + 1> *map >> 32) ||
         (cuc[0][1] + 1> *map << 32 >> 32))
         ft_errors(10);
     ft_check_turtle_in_the_map(*prime, *map, cuc);
-   ft_print_players(*prime);
+    //ft_print_players(*prime);
     if (argc)
     {
     }

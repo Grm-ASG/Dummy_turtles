@@ -61,6 +61,10 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("One of your turtles without name. Think about it, noname\n"); //TODO
     }
+    else if (num_of_err == 16)
+    {
+        ft_putstr("Double notification of flags\n"); //TODO
+    }
     else if (num_of_err == 99)
     {
         ft_putstr("Oops, to much turtles! Only 10 can play this game\n");
