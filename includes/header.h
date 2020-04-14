@@ -25,6 +25,7 @@ struct         s_turtles
 typedef struct s_turtles    t_turtles;
 
 char            **ft_create_map(ULONG x, ULONG y, ULONG cucumber[][2]);
+void            ft_winner(t_turtles *prime, char num);
 void			*ft_memset(void *memptr, int val, size_t num);
 void            ft_check_arg(int argc, char **argv, t_turtles **prime, ULONG *map, ULONG cuc[][2]);
 void            ft_print_map(char **map);

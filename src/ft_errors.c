@@ -49,9 +49,29 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("Some arguments is invalid, pls check them all\n"); //TODO
     }
+    else if (num_of_err == 13)
+    {
+        ft_putstr("Some turtle come from another galaxy, check it\n"); //TODO
+    }
+    else if (num_of_err == 14)
+    {
+        ft_putstr("No way, how we gona play if there is no any players? Minimal number of turtles = 1\n"); //TODO
+    }
+    else if (num_of_err == 15)
+    {
+        ft_putstr("One of your turtles without name. Think about it, noname\n"); //TODO
+    }
+    else if (num_of_err == 99)
+    {
+        ft_putstr("Oops, to much turtles! Only 10 can play this game\n");
+    }
     else if (num_of_err == 999)
     {
         ft_putstr("Oh, no, this is the rise of the machines!\nJoke, we just didn't get the memory, try a little bit less\n");
+    }
+    else if (num_of_err == 100)
+    {
+        ft_putstr("Of course we could do it 1 bilion years, but after 1000 steps nobody can't took cucumber, oh sweet CUUUCUMBER!\n");
     }
     exit(num_of_err);
 }
