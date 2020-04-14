@@ -41,6 +41,14 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("Oh no, cucumber in other university, try too put it in our\n"); //TODO
     }
+    else if (num_of_err == 11)
+    {
+        ft_putstr("I don't know this argument...\n"); //TODO
+    }
+    else if (num_of_err == 12)
+    {
+        ft_putstr("Some arguments is invalid, pls check them all\n"); //TODO
+    }
     else if (num_of_err == 999)
     {
         ft_putstr("Oh, no, this is the rise of the machines!\nJoke, we just didn't get the memory, try a little bit less\n");

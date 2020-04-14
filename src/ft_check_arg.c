@@ -84,6 +84,7 @@ int             ft_is_beg_turtl(char *arg)
         (arg[0] == 'r' && arg[1] == ':') ||
         (arg[0] == 'u' && arg[1] == ':') ||
         (arg[0] == 'd' && arg[1] == ':'))
+
         return (1);
     return (0);
 }
@@ -123,12 +124,24 @@ void            ft_create_turtl(t_turtles **prime, int i, char *arg)
 int             ft_check_turtle(char *arg, t_turtles **prime)
 {
     int         i;
+    int         j;
+    int         k;
 
     i = 2;
+    j = 2;
+    k = 0;
     if (ft_is_beg_turtl(arg))
         ft_create_turtl(prime, i, arg);
     else if (arg[1] == ':')
-        ft_errors(6);
+    {
+        while (arg[j++])
+            if (arg[j - 1] == '-')
+                k++;
+        if (k == 2)
+            ft_errors(6);
+        else
+            ft_errors(11);
+    }
     else
         return (0);
     return (1);
@@ -193,24 +206,30 @@ void            ft_flag(char **argv, ULONG *map, int *i, ULONG cuc[][2], char fl
 
 void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *map, ULONG cuc[][2])
 {
+    int     j;
     int     i;
     char    fl_s[5] = { 0, 0, 0, 0, 0 };
 
     i = 1;
+    j = 1;
     while (argv[i])
     {
         if (argv[i][0] == '-')
+        {
             ft_flag(argv, map, &i, cuc, &fl_s);
+            j += 2;
+        }
         else
         {
-            (ft_check_turtle(argv[i], prime));
+            if (ft_check_turtle(argv[i], prime))
+                j++;
             i++;
         }
     }
-    printf("map_x = %lu\n", *map >> 32);
-    printf("map_y = %lu\n", *map << 32 >> 32);
-    printf("cuc_x = %lu\n", cuc[0][0]);
-    printf("cuc_y = %lu\n", cuc[0][1]);
+    if (i != j)
+        ft_errors(12);
+    printf("ft_check_arg i = %d\n", i);
+    printf("ft_check_arg j = %d\n", j);
     if (!fl_s[0])
     {
         *map = STANDART_MAP;
@@ -220,12 +239,19 @@ void            ft_check_arg(int argc, char *argv[], t_turtles **prime, ULONG *m
             cuc[0][1] = (*map << 32 >> 33);
         }
     }
-    if (cuc[0][0] + 1 > *map >> 32 || cuc[0][1] + 1 > *map << 32 >> 32)
+
+    /*delete*/
+    printf("map_x = %lu\n", *map >> 32);
+    printf("map_y = %lu\n", *map << 32 >> 32);
+    printf("cuc_x = %lu\n", cuc[0][0]);
+    printf("cuc_y = %lu\n\n", cuc[0][1]);
+    /*delete*/
+
+
+    if ((cuc[0][0] + 1> *map >> 32) ||
+        (cuc[0][1] + 1> *map << 32 >> 32))
         ft_errors(10);
-    //ft_print_players(*prime);
     if (argc)
     {
-        //TODO
     }
-    // DELETE
 }
