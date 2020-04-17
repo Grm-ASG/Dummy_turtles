@@ -42,6 +42,20 @@ void            ft_push_command_back(t_turtles *TURT, char num_of_turtle)
     TURT_WALK_COM[i - 1] = tmp;
 }
 
+void            ft_print_players(t_turtles *prime)
+{
+    while (prime)
+    {
+        printf("Name of the turtle           = %s\n", prime->name);
+        printf("STUN status                  = %d\n", prime->stunned);
+        printf("Where is the turt watch      = %d\n", prime->way);
+        printf("The number of turtule        = %d\n", prime->num);
+        printf("The walk-command is          = %s\n", prime->walk_command);
+        printf("The coordinates of Turtle    = %d:%d\n\n", TURT_X, TURT_Y );
+        prime = prime->next;
+    }
+}
+
 void            ft_print_map(char **field)
 {
     short j;
@@ -106,6 +120,7 @@ void            ft_check_crash(t_turtles *TURT, char **field)
     t_turtles   *tmp;
     t_turtles   *tmp2;
 
+
     tmp = TURT;
     while (tmp->next)
     {
@@ -122,7 +137,6 @@ void            ft_check_crash(t_turtles *TURT, char **field)
         }
         tmp = tmp->next;
     }
-
     tmp = TURT;
     while (TURT)
     {
@@ -131,7 +145,8 @@ void            ft_check_crash(t_turtles *TURT, char **field)
             TURT_X_DTP = TURT_X;
             TURT_Y_DTP = TURT_Y;
             field[TURT_X - 1][TURT_Y - 1] = CRASH;
-            ft_check_back(TURT, TURT_X_LAST, TURT_Y_LAST);
+            if (!(TURT_X == TURT_X_LAST && TURT_Y == TURT_Y_LAST))
+                ft_check_back(TURT, TURT_X_LAST, TURT_Y_LAST);
             TURT_X = TURT_X_LAST;
             TURT_Y = TURT_Y_LAST;
             field[TURT_X - 1][TURT_Y - 1] = STUNNED;
