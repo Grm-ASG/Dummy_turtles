@@ -65,6 +65,10 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("Double notification of flags\n"); //TODO
     }
+    else if (num_of_err == 19)
+    {
+        ft_putstr("The last argument is invalid, check coordinates for this flag\n"); //TODO
+    }
     else if (num_of_err == 99)
     {
         ft_putstr("Oops, to much turtles! Only 10 can play this game\n");

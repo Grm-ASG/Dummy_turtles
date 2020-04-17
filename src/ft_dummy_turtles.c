@@ -1,173 +1,216 @@
 #include "header.h"
 
-
-void            ft_prime_command(t_turtles *prime, char num_of_turtle, ULONG map)
+void            ft_prime_way_r(t_turtles *TURT, char num_of_turtle)
 {
-    while (prime->num != num_of_turtle)
-        prime = prime->next;
-    if (prime->way & 1)
+    while (TURT_NUM != num_of_turtle)
+        TURT = TURT_NEXT;
     {
-        if ((prime->location & MASK) == (map & MASK))
-            prime->location = (prime->location & ANTI_MASKA) | 1;
+        if (TURT_WAY & 1)
+            TURT_WAY = TURT_WAY << 3;
         else
-            prime->location = (prime->location & ANTI_MASKA) | ((prime->location & MASK) + 1);
+            TURT_WAY = TURT_WAY >> 1;
     }
-    else if (prime->way & 2)
-    {
-        if (prime->location >> 32 == 1)
-            prime->location = (map & ANTI_MASKA) | (prime->location & MASK);
-        else
-            prime->location = ((((prime->location >> 32) - 1) << 32) | (prime->location & MASK));
-    }
-    else if (prime->way & 4)
-    {
-        if ((prime->location & MASK) == 1)
-            prime->location = ((prime->location & ANTI_MASKA) | (map & MASK));
-        else
-            prime->location = ((prime->location & ANTI_MASKA) | ((prime->location & MASK) - 1));
-    }
-    else if (prime->way & 8)
-    {
-        if ((prime->location & ANTI_MASKA) == (map & ANTI_MASKA))
-            prime->location = (((ULONG)1 << 32) | (prime->location & MASK));
-        else
-            prime->location = ((((prime->location >> 32) + 1) << 32) | (prime->location & MASK));
-    }
+}
+
+void            ft_prime_way_l(t_turtles *TURT, char num_of_turtle)
+{
+    while (TURT_NUM != num_of_turtle)
+        TURT = TURT_NEXT;
+    if (TURT_WAY & 8)
+        TURT_WAY = TURT_WAY >> 3;
     else
-        ft_errors(1000);
+        TURT_WAY = TURT_WAY << 1;
 }
 
-
-void            ft_prime_way_r(t_turtles *prime, char num_of_turtle)
-{
-    while (prime->num != num_of_turtle)
-        prime = prime->next;
-    {
-        if (prime->way & 1)
-            prime->way = prime->way << 3;
-        else
-            prime->way = prime->way >> 1;
-    }
-}
-
-void            ft_prime_way_l(t_turtles *prime, char num_of_turtle)
-{
-    while (prime->num != num_of_turtle)
-        prime = prime->next;
-    if (prime->way & 8)
-        prime->way = prime->way >> 3;
-    else
-        prime->way = prime->way << 1;
-}
-
-void            ft_move_command(t_turtles *prime, char num_of_turtle)
+        /* If flag "-a" is enabled, I am pushing the first command 
+         * of the "Walk-Command" (that was used right now) at the end
+         * of the line. Due to this all turtles perform one action
+         * per turn                                                */
+void            ft_push_command_back(t_turtles *TURT, char num_of_turtle)
 {
     int     i;
     char    tmp;
 
-
-    while (prime->num != num_of_turtle)
-        prime = prime->next;
-    if (prime->walk_command[1] == '\0')
+    while (TURT_NUM != num_of_turtle)
+        TURT = TURT_NEXT;
+    if (TURT_WALK_COM[1] == '\0')
         return ;
     i = 0;
-    tmp = prime->walk_command[0];
-    while (prime->walk_command[++i])
-        prime->walk_command[i - 1] = prime->walk_command[i];
-    prime->walk_command[i - 1] = tmp;
+    tmp = TURT_WALK_COM[0];
+    while (TURT_WALK_COM[++i])
+        TURT_WALK_COM[i - 1] = TURT_WALK_COM[i];
+    TURT_WALK_COM[i - 1] = tmp;
 }
 
-
-void            ft_turtle_goes(t_turtles *prime, char **field, ULONG map, char flags_arr[5])
+void            ft_print_map(char **field)
 {
-    int     i;
-    ULONG   tmp;
+    short j;
 
-    if (flags_arr[2])
+    j = -1;
+    system("clear");
+    while (field[++j])
     {
-        while (prime)
-        {
-            tmp = prime->location;
-
-            if (prime->walk_command[0] == 'g')
-                ft_prime_command(prime, prime->num, map);
-            else if (prime->walk_command[0] == 'r')
-                ft_prime_way_r(prime, prime->num);
-            else if (prime->walk_command[0] == 'l')
-                ft_prime_way_l(prime, prime->num);
-
-            ft_move_command(prime, prime->num);
-            if (field[(prime->location >> 32) - 1][(prime->location & MASK) - 1] == '0')
-                ft_winner(prime, prime->num);
-            if (tmp != prime->location)
-                field[(tmp >> 32) - 1][(tmp & MASK) - 1] = '-';
-            field[(prime->location >> 32) -1][(prime->location & MASK) - 1] = prime->num + 'A' - 1;
-            prime = prime->next;
-        }
+        ft_putstr(field[j]);
+        ft_putchar('\n');
     }
-    else
-    {
-        while (prime)
-        {
-            tmp = prime->location;
-            i = 0;
-            while (prime->walk_command[i++])
-                if (prime->walk_command[i - 1] == 'g')
-                    ft_prime_command(prime, prime->num, map);
-                else if (prime->walk_command[i - 1] == 'r')
-                    ft_prime_way_r(prime, prime->num);
-                else if (prime->walk_command[i - 1] == 'l')
-                    ft_prime_way_l(prime, prime->num);
-            if (field[(prime->location >> 32) - 1][(prime->location & MASK) - 1] == '0')
-                ft_winner(prime, prime->num);
-            if (tmp != prime->location)
-                field[(tmp >> 32) - 1][(tmp & MASK) - 1] = '-';
-            field[(prime->location >> 32) -1][(prime->location & MASK) - 1] = prime->num + 'A' - 1;
-            prime = prime->next;
-        }
-    }
+    ft_putchar('\n');
+    usleep(DELAY);
 }
 
-void            ft_is_eat_cuc(t_turtles *prime, ULONG cuc[][2])
+void            ft_prime_command(t_turtles *TURT, char num_of_turtle, USHORT map[2])
 {
-    while (prime)
-    {
-        if (((prime->location >> 32) - 1 == cuc[0][0]) &&
-            ((prime->location & MASK) - 1 == cuc[0][1]))
-            ft_winner(prime, prime->num);
+    while (prime->num != num_of_turtle)
         prime = prime->next;
+    if      (TURT_WAY & RIGHT)
+        if (TURT_Y == map[1])
+            TURT_Y = 1;
+        else
+            TURT_Y += 1;
+    else if (TURT_WAY & UP)
+        if (TURT_X == 1)
+            TURT_X = map[0];
+        else
+            TURT_X -= 1;
+    else if (TURT_WAY & LEFT)
+        if (TURT_Y == 1)
+            TURT_Y = map[1];
+        else
+            TURT_Y -= 1;
+    else if (TURT_WAY & DOWN)
+        if (TURT_X == map[0])
+            TURT_X = 1;
+        else
+            TURT_X += 1;
+    else
+        ft_errors(1000);
+}
+
+void            ft_check_back(t_turtles *TURT, USHORT x, USHORT y)
+{
+    t_turtles *tmp;
+
+    tmp = TURT;
+    while (TURT)
+    {
+        if (x == TURT_X && y == TURT_Y)
+        {
+            TURT_STUN = 1;
+            ft_check_back(tmp, TURT_X_LAST, TURT_Y_LAST);
+        }
+        TURT = TURT_NEXT;
     }
 }
 
-void            ft_dummy_turtles(t_turtles *prime, ULONG map, ULONG cuc[][2], char flags_arr[5])
+void            ft_check_crash(t_turtles *TURT, char **field)
+{
+    t_turtles   *tmp;
+    t_turtles   *tmp2;
+
+    tmp = TURT;
+    while (tmp->next)
+    {
+        tmp2 = tmp->next;
+        while (tmp2)
+        {
+            if (tmp->turt_x == tmp2->turt_x &&
+                tmp->turt_y == tmp2->turt_y)
+            {
+                tmp->stunned = 1;
+                tmp2->stunned = 1;
+            }
+            tmp2 = tmp2->next;
+        }
+        tmp = tmp->next;
+    }
+
+    tmp = TURT;
+    while (TURT)
+    {
+        if (TURT_STUN)
+        {
+            TURT_X_DTP = TURT_X;
+            TURT_Y_DTP = TURT_Y;
+            field[TURT_X - 1][TURT_Y - 1] = CRASH;
+            ft_check_back(TURT, TURT_X_LAST, TURT_Y_LAST);
+            TURT_X = TURT_X_LAST;
+            TURT_Y = TURT_Y_LAST;
+            field[TURT_X - 1][TURT_Y - 1] = STUNNED;
+        }
+        TURT = TURT_NEXT;
+    }
+}
+
+void            ft_turtle_goes(t_turtles *TURT, char **field, USHORT map[2], char flags_arr[5])
+{
+    USHORT   tmp_x;
+    USHORT   tmp_y;
+    USHORT   i;
+    t_turtles   *back_up;
+
+    back_up = TURT;
+    while (TURT)
+    {
+        TURT_X_LAST = TURT_X;
+        TURT_Y_LAST = TURT_Y;
+        tmp_x = TURT_X;
+        tmp_y = TURT_Y;
+        i = -1;
+
+        if (!TURT_STUN)
+        {
+            if (flags_arr[2])
+            {
+                if (TURT_WALK_COM[0] == 'g')
+                    ft_prime_command(TURT, TURT_NUM, map);
+                else if (TURT_WALK_COM[0] == 'r')
+                    ft_prime_way_r(TURT, TURT_NUM);
+                else if (TURT_WALK_COM[0] == 'l')
+                    ft_prime_way_l(TURT, TURT_NUM);
+                ft_push_command_back(TURT, TURT_NUM);
+            }
+            else
+                while (TURT_WALK_COM[++i])
+                    if (TURT_WALK_COM[i] == 'g')
+                        ft_prime_command(TURT, TURT_NUM, map);
+                    else if (TURT_WALK_COM[i] == 'r')
+                        ft_prime_way_r(TURT, TURT_NUM);
+                    else if (TURT_WALK_COM[i] == 'l')
+                        ft_prime_way_l(TURT, TURT_NUM);
+
+            if (field[TURT_X - 1][TURT_Y - 1] == '0')
+                ft_winner(TURT, TURT_NUM);
+            if (tmp_x != TURT_X || tmp_y != TURT_Y)
+                if (field[tmp_x - 1][tmp_y - 1] == TURT_NUM + 'A' - 1)
+                    field[tmp_x - 1][tmp_y - 1] = BLANK;
+            field[TURT_X - 1][TURT_Y - 1] = TURT_NUM + 'A' - 1;
+        }
+        else
+        {
+            if (field[TURT_X_DTP - 1][TURT_Y_DTP - 1] == CRASH)
+                field[TURT_X_DTP - 1][TURT_Y_DTP - 1] = BLANK;
+            TURT_STUN = 0;
+            
+            field[TURT_X - 1][TURT_Y - 1] = TURT_NUM + 'A' - 1;
+        }
+        TURT = TURT_NEXT;
+    }
+    if (flags_arr[3])
+        ft_check_crash(back_up, field);
+    if (flags_arr[4])
+        ft_print_map(field);
+}
+
+void            ft_dummy_turtles(t_turtles *TURT, USHORT map[2], USHORT cuc[][2], char flags_arr[5])
 {
     char    **field;
-    int     i;
-    int     j;
+    short   i;
 
-    i = 0;
-    if (!(field = ft_create_map(map >> 32, map & MASK, cuc)))
+    i = - 1;
+    if (!(field = ft_create_map(map[0], map[1], cuc, TURT)))
             ft_errors(999);
-    while (i < 1000)
-    {
-        ft_is_eat_cuc(prime, cuc);
-        ft_turtle_goes(prime, field, map, flags_arr);
-        j = 0;
-        if (flags_arr[4])
-        {
-            system("clear");
-            while (field[j])
-            {
-                ft_putstr(field[j]);
-                ft_putchar('\n');
-                j++;
-            }
-            usleep(200000);
-        }
-        i++;
-    }
+    if (flags_arr[4])
+        ft_print_map(field);
+    while (++i < MAX_TURNS)
+        ft_turtle_goes(TURT, field, map, flags_arr);
     ft_errors(100);
-    if (prime)
-    {
-    }
 }

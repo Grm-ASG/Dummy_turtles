@@ -1,6 +1,6 @@
 #include "header.h"
 
-void           ft_check_coord(int *tmp, int *i, char *arg, ULONG *x, char c)
+void           ft_check_coord(int *tmp, int *i, char *arg, USHORT *x, char c)
 {
     *tmp = *i;
     while(arg[*tmp] != c)
@@ -11,11 +11,9 @@ void           ft_check_coord(int *tmp, int *i, char *arg, ULONG *x, char c)
     }
     *x = ft_atoi(arg + (*i));
     *i = *tmp + 1;
-
-    //TODO Think about coordinates '0' !!!
 }
 
-void            ft_check_wlk_cmd(t_turtles **prime, int *i, char *arg)
+void            ft_check_wlk_cmd(t_turtles **TURT, int *i, char *arg)
 {
     int len;
 
@@ -27,40 +25,40 @@ void            ft_check_wlk_cmd(t_turtles **prime, int *i, char *arg)
             ft_errors(4);
     if (len - (*i) == 1)
             ft_errors(4);
-    if (!((*prime)->walk_command = (char *)malloc(sizeof(char) * (len - *i))))
+    if (!((*TURT)->walk_command = (char *)malloc(sizeof(char) * (len - *i))))
         ft_errors(999);
     len = 0;
     while (arg[*i] != '-')
-        (*prime)->walk_command[len++] = arg[(*i)++];
-    (*prime)->walk_command[*i] = '\0';
+        (*TURT)->walk_command[len++] = arg[(*i)++];
+    (*TURT)->walk_command[*i] = '\0';
     (*i)++;
 }
 
-int             ft_check_x_y(t_turtles **prime, int *i, char *arg)
+void             ft_check_x_y(t_turtles **TURT, int *i, char *arg)
 {
-    ULONG   x;
-    ULONG   y;
+    USHORT   x;
+    USHORT   y;
     int     tmp;
 
     ft_check_coord(&tmp, i, arg, &x, ':');
     ft_check_coord(&tmp, i, arg, &y, '-');
-    (*prime)->location = (x << 32 | y);
-    return (0);
+    (*TURT)->turt_x = x;
+    (*TURT)->turt_y = y;
 }
 
-void            ft_turtle_way(t_turtles **prime, char *arg)
+void            ft_turtle_way(t_turtles **TURT, char *arg)
 {
     if      (arg[0] == 'r')
-        (*prime)->way = 1;
+        (*TURT)->way = RIGHT;
     else if (arg[0] == 'u')
-        (*prime)->way = 2;
+        (*TURT)->way = UP;
     else if (arg[0] == 'l')
-        (*prime)->way = 4;
+        (*TURT)->way = LEFT;
     else if (arg[0] == 'd')
-        (*prime)->way = 8;
+        (*TURT)->way = DOWN;
 }
 
-void            ft_check_name(t_turtles **prime, int i, char *arg)
+void            ft_check_name(t_turtles **TURT, int i, char *arg)
 {
     int len;
 
@@ -73,12 +71,12 @@ void            ft_check_name(t_turtles **prime, int i, char *arg)
             ft_errors(5);
     if (len - i == 1)
             ft_errors(5);
-    if (!((*prime)->name = (char *)malloc(sizeof(char) * (len - i))))
+    if (!((*TURT)->name = (char *)malloc(sizeof(char) * (len - i))))
         ft_errors(999);
     len = 0;
     while (arg[i])
-        (*prime)->name[len++] = arg[i++];
-    (*prime)->name[i] = '\0';
+        (*TURT)->name[len++] = arg[i++];
+    (*TURT)->name[i] = '\0';
 }
 int             ft_is_beg_turtl(char *arg)
 {
@@ -90,49 +88,51 @@ int             ft_is_beg_turtl(char *arg)
     return (0);
 }
 
-void            ft_create_turtl(t_turtles **prime, int i, char *arg)
+void            ft_create_turtl(t_turtles **TURT, int i, char *arg)
 {
     t_turtles *tmp;
     t_turtles *tmp2;
 
-    tmp = (*prime);
+    tmp = *TURT;
     tmp2 = tmp;
 
-    if (!((*prime) = (t_turtles *)malloc(sizeof(t_turtles) * 1)))
+    if (!((*TURT) = (t_turtles *)malloc(sizeof(t_turtles) * 1)))
         ft_errors(999);
-    (*prime)->next = NULL;
+    (*TURT)->next = NULL;
 
-    ft_turtle_way(prime, arg);
-    ft_check_x_y(prime, &i, arg);
-    ft_check_wlk_cmd(prime, &i, arg);
-    ft_check_name(prime, i, arg);
+    ft_turtle_way(TURT, arg);
+    ft_check_x_y(TURT, &i, arg);
+    ft_check_wlk_cmd(TURT, &i, arg);
+    ft_check_name(TURT, i, arg);
+    (*TURT)->stunned = 0;
 
     if (tmp == NULL)
-        (*prime)->num = 1;
+        (*TURT)->num = 1;
 
     if (tmp != NULL)
     {
         while (tmp2->next)
             tmp2 = tmp2->next;
-        tmp2->next = (*prime);
-        (*prime)->num = tmp2->num + 1;
+        tmp2->next = (*TURT);
+        (*TURT)->num = tmp2->num + 1;
         if (tmp2->num > 9)
             ft_errors(99);
-        (*prime) = tmp;
+        (*TURT) = tmp;
     }
 }
 
-int             ft_check_turtle(char *arg, t_turtles **prime)
+void             ft_check_turtle(char *arg, t_turtles **TURT, int *l, int *q)
 {
     int         i;
     int         j;
     int         k;
 
+    *q += 1;
     i = 2;
     j = 2;
     k = 0;
     if (ft_is_beg_turtl(arg))
-        ft_create_turtl(prime, i, arg);
+        ft_create_turtl(TURT, i, arg);
     else if (arg[1] == ':')
     {
         while (arg[j++])
@@ -144,14 +144,15 @@ int             ft_check_turtle(char *arg, t_turtles **prime)
             ft_errors(11);
     }
     else
-        return (0);
-    return (1);
+        return ;
+    *l += 1;
+
 }
 
-void            ft_flag(char **argv, ULONG *map, int *i, int *j, ULONG cuc[][2], char fl_s[][5])
+void            ft_flag(char **argv, USHORT map[][2], int *i, int *j, USHORT cuc[][2], char fl_s[][5])
 {
-    ULONG   x;
-    ULONG   y;
+    USHORT   x;
+    USHORT   y;
     int     tmp;
     int     tmp2;
 
@@ -163,79 +164,88 @@ void            ft_flag(char **argv, ULONG *map, int *i, int *j, ULONG cuc[][2],
         ft_errors(8);
     if (argv[*i][1] == 's')
     {
-        if (fl_s[0][0] != 0)
+        if ((*fl_s)[0] != 0)
             ft_errors(16);
+        (*fl_s)[0] = 1;
         tmp2 = *i;
         *i = 0;
+        if (argv[tmp2 + 1] == NULL)
+            ft_errors(19);
         ft_check_coord(&tmp, i, argv[tmp2 + 1], &x, ':');
         ft_check_coord(&tmp, i, argv[tmp2 + 1], &y, '\0');
+        if (x == 0 || y == 0)
+            ft_errors(9);
         *i = tmp2 + 2;
-        *map = (x << 32) | y;
-        if (!fl_s[0][1])
+        map[0][0] = x;
+        map[0][1] = y;
+        /* If there is no flag "-l" -> set cucumber *
+         * coordinates at the half of the map       */
+        if (!(*fl_s)[1])
         {
-            cuc[0][0] = *map >> 33;
-            cuc[0][1] = (*map & MASK) >> 1;
+            (*cuc)[0] = (*map)[0] & 1 ? (*map)[0] >> 1 : ((*map)[0] >> 1) - 1;
+            (*cuc)[1] = (*map)[1] & 1 ? (*map)[1] >> 1 : ((*map)[1] >> 1) - 1;
         }
-        fl_s[0][0] = 1;
         *j += 2;
     }
     else if (argv[*i][1] == 'l')
     {
-        if (fl_s[0][1] != 0)
+        if ((*fl_s)[1] != 0)
             ft_errors(16);
+        (*fl_s)[1] = 1;
         tmp2 = *i;
         *i = 0;
+        if (argv[tmp2 + 1] == NULL)
+            ft_errors(19);
         ft_check_coord(&tmp, i, argv[tmp2 + 1], &x, ':');
         ft_check_coord(&tmp, i, argv[tmp2 + 1], &y, '\0');
+        if (x == 0 || y == 0)
+            ft_errors(9);
         *i = tmp2 + 2;
-        cuc[0][0] = x - 1;
-        cuc[0][1] = y - 1;
-        fl_s[0][1] = 1;
+        (*cuc)[0] = x - 1;
+        (*cuc)[1] = y - 1;
         *j += 2;
     }
     else if (argv[*i][1] == 'a')
     {
-        if (fl_s[0][2] != 0)
+        if ((*fl_s)[2] != 0)
             ft_errors(16);
-        fl_s[0][2] = 1;
+        (*fl_s)[2] = 1;
         *i += 1;
         *j += 1;
     }
     else if (argv[*i][1] == 'k')
     {
-        if (fl_s[0][3] != 0)
+        if ((*fl_s)[3] != 0)
             ft_errors(16);
-        fl_s[0][3] = 1;
+        (*fl_s)[3] = 1;
         *i += 1;
         *j += 1;
     }
     else if (argv[*i][1] == 'i')
     {
-        if (fl_s[0][4] != 0)
+        if ((*fl_s)[4] != 0)
             ft_errors(16);
-        fl_s[0][4] = 1;
+        (*fl_s)[4] = 1;
         *i += 1;
         *j += 1;
     }
-    if (x == 0 || y == 0)
-        ft_errors(9);
 }
 
-void            ft_check_turtle_in_the_map(t_turtles *prime, ULONG map, ULONG cuc[][2])
+void            ft_check_turtle_in_the_map(t_turtles *TURT, USHORT map[][2], USHORT cuc[][2])
 {
-    while (prime)
+    while (TURT)
     {
-        if ((prime->location >> 32) > map >> 32 ||
-            ((prime->location & MASK) > (map & MASK)))
+        if (TURT_X > *map[0] ||
+            TURT_Y > *map[1])
             ft_errors(13);
-        if (((prime->location >> 32) - 1 == cuc[0][0]) &&
-            ((prime->location & MASK) - 1 == cuc[0][1]))
-            ft_winner(prime, prime->num);
-        prime = prime->next;
+        if ((TURT_X - 1 == (*cuc)[0]) &&
+            (TURT_Y - 1 == (*cuc)[1]))
+            ft_winner(TURT, TURT->num);
+        TURT = TURT_NEXT;
     }
 }
 
-void            ft_check_arg(char *argv[], t_turtles **prime, ULONG *map, ULONG cuc[][2], char fl_s[][5])
+void            ft_check_arg(char **argv, t_turtles **TURT, USHORT map[][2], USHORT cuc[][2], char fl_s[][5])
 {
     int     j;
     int     i;
@@ -246,23 +256,14 @@ void            ft_check_arg(char *argv[], t_turtles **prime, ULONG *map, ULONG 
         if (argv[i][0] == '-')
             ft_flag(argv, map, &i, &j, cuc, fl_s);
         else
-            if (ft_check_turtle(argv[i++], prime))
-                j++;
-    if (*prime == NULL)
+            ft_check_turtle(argv[i], TURT, &j, &i);
+
+    if (*TURT == NULL)
         ft_errors(14);
     if (i != j)
         ft_errors(12);
-    if (!fl_s[0][0])
-    {
-        *map = STANDART_MAP;
-        if (!fl_s[0][1])
-        {
-            cuc[0][0] = (*map >> 33) - 1;
-            cuc[0][1] = (*map << 32 >> 33) - 1;
-        }
-    }
-    if (((cuc[0][0] + 1) > *map >> 32) ||
-        ((cuc[0][1] + 1) > *map << 32 >> 32))
+    if (((*cuc)[0] + 1) > (*map)[0] ||
+        ((*cuc)[1] + 1) > (*map)[1] )
         ft_errors(10);
-    ft_check_turtle_in_the_map(*prime, *map, cuc);
+    ft_check_turtle_in_the_map(*TURT, map, cuc);
 }
