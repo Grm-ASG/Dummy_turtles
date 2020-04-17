@@ -176,8 +176,8 @@ void            ft_flag(char **argv, USHORT map[][2], int *i, int *j, USHORT cuc
         if (x == 0 || y == 0)
             ft_errors(9);
         *i = tmp2 + 2;
-        map[0][0] = x;
-        map[0][1] = y;
+        (*map)[0] = x;
+        (*map)[1] = y;
         /* If there is no flag "-l" -> set cucumber *
          * coordinates at the half of the map       */
         if (!(*fl_s)[1])
@@ -235,8 +235,8 @@ void            ft_check_turtle_in_the_map(t_turtles *TURT, USHORT map[][2], USH
 {
     while (TURT)
     {
-        if (TURT_X > *map[0] ||
-            TURT_Y > *map[1])
+        if (TURT_X > (*map)[0] ||
+            TURT_Y > (*map)[1])
             ft_errors(13);
         if ((TURT_X - 1 == (*cuc)[0]) &&
             (TURT_Y - 1 == (*cuc)[1]))

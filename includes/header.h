@@ -19,10 +19,11 @@
 # define TURT_Y_LAST    prime->turt_y_last
 # define TURT_WAY       prime->way
 # define TURT_NUM       prime->num
+# define TURT_NAME      prime->name
 # define TURT_NEXT      prime->next
 # define TURT_STUN      prime->stunned
 # define TURT_WALK_COM  prime->walk_command
-# define BLANK          '-'
+# define BLANK          '.'
 # define CRASH          '!'
 # define STUNNED        '@'
 # define ERR            "Error, "
@@ -59,6 +60,7 @@ void            ft_dummy_turtles(t_turtles *prime, USHORT map[2], USHORT cuc[][2
 void            ft_errors(int num_of_err);
 void			ft_putstr(char *str);
 void			ft_putchar(char c);
+void		    ft_putnbr(int nb);
 int         	ft_strlen(char *str);
 int             ft_atoi(char *str);
 

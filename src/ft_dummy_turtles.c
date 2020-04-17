@@ -53,7 +53,6 @@ void            ft_print_map(char **field)
         ft_putstr(field[j]);
         ft_putchar('\n');
     }
-    ft_putchar('\n');
     usleep(DELAY);
 }
 
