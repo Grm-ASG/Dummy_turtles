@@ -36,12 +36,12 @@ typedef struct s_turtles    t_turtles;
 struct         s_turtles
 {
     t_turtles    *next;
-    UNS_TYPE       turt_x;
-    UNS_TYPE       turt_dtp_x;
-    UNS_TYPE       turt_x_last;
-    UNS_TYPE       turt_y;
-    UNS_TYPE       turt_dtp_y;
-    UNS_TYPE       turt_y_last;
+    UNS_TYPE     turt_x;
+    UNS_TYPE     turt_dtp_x;
+    UNS_TYPE     turt_x_last;
+    UNS_TYPE     turt_y;
+    UNS_TYPE     turt_dtp_y;
+    UNS_TYPE     turt_y_last;
     char         *walk_command;
     char         *name;
     char         way;
@@ -58,6 +58,7 @@ void            ft_print_map(char **map);
 void			ft_putstr(char *str);
 void			ft_putchar(char c);
 void		    ft_putnbr(int nb);
+int 			ft_strcmp(char *s1, char *s2);
 int         	ft_strlen(char *str);
 int             ft_atoi(char *str);
 

@@ -244,6 +244,25 @@ void            ft_check_turtle_in_the_map(t_turtles *TURT, UNS_TYPE map[][2], U
         TURT = TURT_NEXT;
     }
 }
+void            ft_check_duplicates(t_turtles *TURT)
+{
+    t_turtles *back_up;
+
+    back_up = TURT;
+    while (TURT_NEXT)
+    {
+        back_up = TURT_NEXT;
+        while (back_up)
+        {
+            if (TURT_X == back_up->turt_x && TURT_Y == back_up->turt_y)
+                ft_errors(20);
+            if (!(ft_strcmp(TURT_NAME, back_up->name)))
+                ft_errors(21);
+            back_up = back_up->next;
+        }
+        TURT = TURT_NEXT;
+    }
+}
 
 void            ft_check_arg(char **argv, t_turtles **TURT, UNS_TYPE map[][2], UNS_TYPE cuc[][2], char fl_s[][5])
 {
@@ -266,4 +285,5 @@ void            ft_check_arg(char **argv, t_turtles **TURT, UNS_TYPE map[][2], U
         ((*cuc)[1] + 1) > (*map)[1] )
         ft_errors(10);
     ft_check_turtle_in_the_map(*TURT, map, cuc);
+    ft_check_duplicates(*TURT);
 }

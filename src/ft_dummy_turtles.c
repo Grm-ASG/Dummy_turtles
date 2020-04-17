@@ -4,12 +4,10 @@ void            ft_prime_way_r(t_turtles *TURT, char num_of_turtle)
 {
     while (TURT_NUM != num_of_turtle)
         TURT = TURT_NEXT;
-    {
-        if (TURT_WAY & 1)
-            TURT_WAY = TURT_WAY << 3;
-        else
-            TURT_WAY = TURT_WAY >> 1;
-    }
+    if (TURT_WAY & 1)
+        TURT_WAY = TURT_WAY << 3;
+    else
+        TURT_WAY = TURT_WAY >> 1;
 }
 
 void            ft_prime_way_l(t_turtles *TURT, char num_of_turtle)

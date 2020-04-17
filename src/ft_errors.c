@@ -71,6 +71,14 @@ void            ft_errors(int num_of_err)
     {
         ft_putstr("The last argument is invalid, check coordinates for this flag\n"); 
     }
+    else if (num_of_err == 20)
+    {
+        ft_putstr("The start position of the turtles must be unique, check it\n"); 
+    }
+    else if (num_of_err == 21)
+    {
+        ft_putstr("The name of the turtles must be unique\n"); 
+    }
     else if (num_of_err == 99)
     {
         ft_putstr("Oops, to much turtles! Only 10 can play this game\n");
