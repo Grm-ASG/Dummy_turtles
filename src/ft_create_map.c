@@ -1,10 +1,10 @@
 #include "header.h"
 
-char            **ft_create_map(USHORT columns, USHORT rows, USHORT cuc[][2], t_turtles *TURT)
+char            **ft_create_map(UNS_TYPE columns, UNS_TYPE rows, UNS_TYPE cuc[][2], t_turtles *TURT)
 {
     char    **map;
-    USHORT  i;
-    USHORT  j;
+    UNS_TYPE  i;
+    UNS_TYPE  j;
 
     i = - 1;
     if (!(map = (char **)malloc(sizeof(char *) * (columns + 1))))

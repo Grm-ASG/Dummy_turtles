@@ -1,6 +1,6 @@
 #include "header.h"
 
-void           ft_check_coord(int *tmp, int *i, char *arg, USHORT *x, char c)
+void           ft_check_coord(int *tmp, int *i, char *arg, UNS_TYPE *x, char c)
 {
     *tmp = *i;
     while(arg[*tmp] != c)
@@ -36,8 +36,8 @@ void            ft_check_wlk_cmd(t_turtles **TURT, int *i, char *arg)
 
 void             ft_check_x_y(t_turtles **TURT, int *i, char *arg)
 {
-    USHORT   x;
-    USHORT   y;
+    UNS_TYPE   x;
+    UNS_TYPE   y;
     int     tmp;
 
     ft_check_coord(&tmp, i, arg, &x, ':');
@@ -149,10 +149,10 @@ void             ft_check_turtle(char *arg, t_turtles **TURT, int *l, int *q)
 
 }
 
-void            ft_flag(char **argv, USHORT map[][2], int *i, int *j, USHORT cuc[][2], char fl_s[][5])
+void            ft_flag(char **argv, UNS_TYPE map[][2], int *i, int *j, UNS_TYPE cuc[][2], char fl_s[][5])
 {
-    USHORT   x;
-    USHORT   y;
+    UNS_TYPE   x;
+    UNS_TYPE   y;
     int     tmp;
     int     tmp2;
 
@@ -231,7 +231,7 @@ void            ft_flag(char **argv, USHORT map[][2], int *i, int *j, USHORT cuc
     }
 }
 
-void            ft_check_turtle_in_the_map(t_turtles *TURT, USHORT map[][2], USHORT cuc[][2])
+void            ft_check_turtle_in_the_map(t_turtles *TURT, UNS_TYPE map[][2], UNS_TYPE cuc[][2])
 {
     while (TURT)
     {
@@ -245,7 +245,7 @@ void            ft_check_turtle_in_the_map(t_turtles *TURT, USHORT map[][2], USH
     }
 }
 
-void            ft_check_arg(char **argv, t_turtles **TURT, USHORT map[][2], USHORT cuc[][2], char fl_s[][5])
+void            ft_check_arg(char **argv, t_turtles **TURT, UNS_TYPE map[][2], UNS_TYPE cuc[][2], char fl_s[][5])
 {
     int     j;
     int     i;

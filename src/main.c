@@ -3,8 +3,8 @@
 int			main(int argc, char **argv)
 {
     t_turtles   *prime;
-    USHORT      map_coordinates[2] = { STD_MAP, STD_MAP };
-    USHORT      cuc[2] = { (STD_MAP >> 1) - 1, (STD_MAP >> 1) - 1 };
+    UNS_TYPE    map_coordinates[2] = { STD_MAP, STD_MAP };
+    UNS_TYPE    cuc[2] = { (STD_MAP >> 1) - 1, (STD_MAP >> 1) - 1 };
     char        flags_arr[5] = { 0, 0, 0, 0, 0 };
 
     prime = NULL;

@@ -56,7 +56,7 @@ void            ft_print_map(char **field)
     usleep(DELAY);
 }
 
-void            ft_prime_command(t_turtles *TURT, char num_of_turtle, USHORT map[2])
+void            ft_prime_command(t_turtles *TURT, char num_of_turtle, UNS_TYPE map[2])
 {
     while (prime->num != num_of_turtle)
         prime = prime->next;
@@ -84,7 +84,7 @@ void            ft_prime_command(t_turtles *TURT, char num_of_turtle, USHORT map
         ft_errors(1000);
 }
 
-void            ft_check_back(t_turtles *TURT, USHORT x, USHORT y)
+void            ft_check_back(t_turtles *TURT, UNS_TYPE x, UNS_TYPE y)
 {
     t_turtles *tmp;
 
@@ -140,11 +140,11 @@ void            ft_check_crash(t_turtles *TURT, char **field)
     }
 }
 
-void            ft_turtle_goes(t_turtles *TURT, char **field, USHORT map[2], char flags_arr[5])
+void            ft_turtle_goes(t_turtles *TURT, char **field, UNS_TYPE map[2], char flags_arr[5])
 {
-    USHORT   tmp_x;
-    USHORT   tmp_y;
-    USHORT   i;
+    UNS_TYPE   tmp_x;
+    UNS_TYPE   tmp_y;
+    UNS_TYPE   i;
     t_turtles   *back_up;
 
     back_up = TURT;
@@ -200,7 +200,7 @@ void            ft_turtle_goes(t_turtles *TURT, char **field, USHORT map[2], cha
         ft_print_map(field);
 }
 
-void            ft_dummy_turtles(t_turtles *TURT, USHORT map[2], USHORT cuc[][2], char flags_arr[5])
+void            ft_dummy_turtles(t_turtles *TURT, UNS_TYPE map[2], UNS_TYPE cuc[][2], char flags_arr[5])
 {
     char    **field;
     short   i;

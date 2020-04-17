@@ -27,37 +27,34 @@
 # define CRASH          '!'
 # define STUNNED        '@'
 # define ERR            "Error, "
-# define STANDART_MAP   (30UL << 32 | 30UL)
 # define STD_MAP        30
 # define STD_CUC        15
 
-typedef unsigned int USHORT;
+typedef unsigned int UNS_TYPE;
+typedef struct s_turtles    t_turtles;
 
 struct         s_turtles
 {
-    struct s_turtles    *next;
-    USHORT              turt_x;
-    USHORT              turt_dtp_x;
-    USHORT              turt_x_last;
-    USHORT              turt_y;
-    USHORT              turt_dtp_y;
-    USHORT              turt_y_last;
-    char                *walk_command;
-    char                *name;
-    char                way;
-    char                num;
-    char                stunned;
+    t_turtles    *next;
+    UNS_TYPE       turt_x;
+    UNS_TYPE       turt_dtp_x;
+    UNS_TYPE       turt_x_last;
+    UNS_TYPE       turt_y;
+    UNS_TYPE       turt_dtp_y;
+    UNS_TYPE       turt_y_last;
+    char         *walk_command;
+    char         *name;
+    char         way;
+    char         num;
+    char         stunned;
 };
 
-typedef struct s_turtles    t_turtles;
-
-char            **ft_create_map(USHORT x, USHORT y, USHORT cucumber[][2], t_turtles *TURT);
+char            **ft_create_map(UNS_TYPE x, UNS_TYPE y, UNS_TYPE cucumber[][2], t_turtles *TURT);
+void            ft_check_arg(char **argv, t_turtles **prime, UNS_TYPE map[][2], UNS_TYPE cuc[][2], char fl_l[][5]);
+void            ft_dummy_turtles(t_turtles *prime, UNS_TYPE map[2], UNS_TYPE cuc[][2], char flags_arr[5]);
 void            ft_winner(t_turtles *prime, char num);
-void			*ft_memset(void *memptr, int val, size_t num);
-void            ft_check_arg(char **argv, t_turtles **prime, USHORT map[][2], USHORT cuc[][2], char fl_l[][5]);
-void            ft_print_map(char **map);
-void            ft_dummy_turtles(t_turtles *prime, USHORT map[2], USHORT cuc[][2], char flags_arr[5]);
 void            ft_errors(int num_of_err);
+void            ft_print_map(char **map);
 void			ft_putstr(char *str);
 void			ft_putchar(char c);
 void		    ft_putnbr(int nb);
