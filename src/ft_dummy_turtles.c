@@ -42,20 +42,6 @@ void            ft_push_command_back(t_turtles *TURT, char num_of_turtle)
     TURT_WALK_COM[i - 1] = tmp;
 }
 
-void            ft_print_players(t_turtles *prime)
-{
-    while (prime)
-    {
-        printf("Name of the turtle           = %s\n", prime->name);
-        printf("STUN status                  = %d\n", prime->stunned);
-        printf("Where is the turt watch      = %d\n", prime->way);
-        printf("The number of turtule        = %d\n", prime->num);
-        printf("The walk-command is          = %s\n", prime->walk_command);
-        printf("The coordinates of Turtle    = %d:%d\n\n", TURT_X, TURT_Y );
-        prime = prime->next;
-    }
-}
-
 void            ft_print_map(char **field)
 {
     short j;
