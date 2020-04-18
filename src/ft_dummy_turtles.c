@@ -210,5 +210,7 @@ void            ft_dummy_turtles(t_turtles *TURT, UNS_TYPE map[2], UNS_TYPE cuc[
         ft_print_map(field);
     while (++i < MAX_TURNS)
         ft_turtle_goes(TURT, field, map, flags_arr);
+    if (flags_arr[4])
+        system("clear");
     ft_errors(100);
 }
